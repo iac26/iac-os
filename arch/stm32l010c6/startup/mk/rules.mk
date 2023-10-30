@@ -74,7 +74,7 @@ $(COBJS) : $(OBJDIR)/%.o : %.c $(MAKEFILE_LIST)
 
 $(ASMOBJS) : $(OBJDIR)/%.o : %.S $(MAKEFILE_LIST)
 	@echo Compiling $(<F)
-	$(AS) -c $(ASFLAGS) -I. $(IINCDIR) $< -o $@
+	@$(AS) -c $(ASFLAGS) -I. $(IINCDIR) $< -o $@
 
 
 $(BUILDDIR)/$(PROJECT).elf: $(OBJS) $(LDSCRIPT)
@@ -101,7 +101,9 @@ $(BUILDDIR)/$(PROJECT).elf: $(OBJS) $(LDSCRIPT)
 	@echo
 	@echo Done
 
-
+clean:
+	@echo Cleaning..
+	@rm -rf $(BUILDDIR)
 
 -include $(wildcard $(DEPDIR)/*)
 
