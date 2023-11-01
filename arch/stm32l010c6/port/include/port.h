@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stm32l010x6.h>
 
 
 /** *******************************************************
@@ -9,9 +10,6 @@
 typedef struct port_context {
 		uint32_t * psp;
 } port_context_t;
-
-
-extern port_context_t current_context;
 
 
 /* Initial value for xPSR  -> check what should be placed here...*/
@@ -72,20 +70,15 @@ extern port_context_t current_context;
 		: : "r" ((ctx)->psp) : "r0"      /* ctx is input, R0 is modified */  \
 	)
 
-static inline void port_context_init(port_context_t * ctx, uint32_t * stack_end, void(*task_func)(void)) {
-	uint32_t * stack_pointer = stack_end;
-	*stack_pointer = PORT_xPSR_INIT;	/* xPSR */
-	stack_pointer -= sizeof(uint32_t);			
-	*stack_pointer = (uint32_t)task_func;	/* PC */
-	stack_pointer -= sizeof(uint32_t);
-	*stack_pointer = 0xFFFFFFFF;		/* LR */
-	stack_pointer -= sizeof(uint32_t);
-	for(uint8_t i = 0; i < 12; i++) {
-		*stack_pointer = 0;		/* Registers */
-		stack_pointer -= sizeof(uint32_t);
-	}
-	*stack_pointer = 0; /* R4 */
-	ctx->psp = stack_pointer;
+
+
+
+void port_context_init(port_context_t * ctx, uint32_t * stack_end, void(*task_func)(void));
+
+
+
+static inline void port_switch(void) {
+	SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
 }
 
 
@@ -105,7 +98,23 @@ typedef uint32_t port_systick_t;
 
 
 
+static inline void port_enter_critical(void) {
+	asm volatile (	
+		".syntax unified	\n"
+		"cpsid	i		\n"
+		"dsb			\n"
+		"isb			\n"
+	);
+}
 
+static inline void port_exit_critical(void) {
+	asm volatile (	
+		".syntax unified	\n"
+		"cpsie	i		\n"
+		"dsb			\n"
+		"isb			\n"
+	);
+}
 
 
 

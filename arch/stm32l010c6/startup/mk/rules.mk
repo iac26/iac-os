@@ -22,9 +22,9 @@ LSTDIR    := $(BUILDDIR)/lst
 DEPDIR    := $(BUILDDIR)/dep
 
 
-COBJS := $(addprefix $(OBJDIR)/, $(notdir $(ALL_CSRC:.c=.o)))
+COBJS := $(addprefix $(OBJDIR)/, $(notdir $(ALL_CSRC:.c=.c.o)))
 
-ASMOBJS := $(addprefix $(OBJDIR)/, $(notdir $(ALL_ASM:.S=.o)))
+ASMOBJS := $(addprefix $(OBJDIR)/, $(notdir $(ALL_ASM:.S=.S.o)))
 
 
 SRCPATHS  := $(sort $(dir $(ALL_ASM)) $(dir $(ALL_CSRC)))
@@ -68,11 +68,11 @@ $(LSTDIR):
 $(DEPDIR):
 	@mkdir -p $(DEPDIR)
 
-$(COBJS) : $(OBJDIR)/%.o : %.c $(MAKEFILE_LIST)
+$(COBJS) : $(OBJDIR)/%.c.o : %.c $(MAKEFILE_LIST)
 	@echo Compiling $(<F)
 	@$(CC) -c $(CFLAGS) -I. $(IINCDIR) $< -o $@
 
-$(ASMOBJS) : $(OBJDIR)/%.o : %.S $(MAKEFILE_LIST)
+$(ASMOBJS) : $(OBJDIR)/%.S.o : %.S $(MAKEFILE_LIST)
 	@echo Compiling $(<F)
 	@$(AS) -c $(ASFLAGS) -I. $(IINCDIR) $< -o $@
 

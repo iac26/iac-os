@@ -2,11 +2,9 @@
 
 #include <stdint.h>
 
+#ifndef _IACOS_INTERNAL
+#error "this can only be included from the OS"
+#endif
 
 
-void internal_handle_svc(uint8_t svc_num, uint32_t svc_arg);
-
-void internal_handle_systick(void);
-
-
-
+void iacos_reschedule(void);

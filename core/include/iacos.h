@@ -25,3 +25,8 @@ typedef uint8_t thread_prio_t;
  ******************************/
 
 typedef struct event event_t;
+
+
+void iacos_init(void);
+void iacos_start(void);
+void iacos_panic(const char * msg);

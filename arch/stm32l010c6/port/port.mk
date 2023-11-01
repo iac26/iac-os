@@ -1,5 +1,5 @@
 
-P_ASM :=
+P_ASM := $(OSPATH)/arch/$(DEVICE)/port/src/port.S
 
 P_SRC := $(OSPATH)/arch/$(DEVICE)/port/src/port.c
 
