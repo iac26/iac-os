@@ -22,6 +22,7 @@ void scheduler_add_thread(	scheduler_t * sch,
 void scheduler_add_threadI(	scheduler_t * sch,
 				thread_t * thd) {
 	thread_t ** node;
+	//insert thread in list such that they are sorted by priority
 	for( node = &(sch->head); (*node) != NULL; node = &((*node)->next)) {
 		if((*node)->priority < thd->priority) {
 			thd->next = (*node);

@@ -11,7 +11,6 @@
 #include <port.h>
 
 #include <event.h>
-#include <delay.h>
 
 
 
@@ -26,9 +25,15 @@ typedef enum thread_state {
 }thread_state_t;
 
 
+struct delay {
+        port_systick_t deadline;     //time at which the delay expires
+};
+
+
 struct thread {
-	thread_t * next;
-	thread_t * prev;
+	thread_t * next; //global thread list next
+	thread_t * prev; //global thread list prev
+	thread_t * s_next; //suspended thread list next
 	thread_prio_t priority;
 	port_context_t context;
 	thread_state_t state;
@@ -51,3 +56,7 @@ void thread_createI(	thread_t * thd,
 			void (*entry)(void), 
 			uint32_t * stack, 
 			uint32_t stack_size);
+
+
+
+void thread_eval_all(thread_t ** head, port_systick_t tick);

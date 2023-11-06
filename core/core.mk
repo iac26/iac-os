@@ -3,8 +3,7 @@
 CORE_SRC := 	$(OSPATH)/core/src/iacos.c 	\
 		$(OSPATH)/core/src/scheduler.c	\
 		$(OSPATH)/core/src/thread.c	\
-		$(OSPATH)/core/src/event.c	\
-		$(OSPATH)/core/src/delay.c	
+		$(OSPATH)/core/src/event.c		
 
 CORE_INC := 	$(OSPATH)/core/include
 

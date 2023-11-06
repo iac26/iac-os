@@ -40,5 +40,18 @@ void thread_start(thread_t * thd) {
 }
 
 
+void thread_eval_all(thread_t ** head, port_systick_t tick) {
+	thread_t ** node;
+	for( node = head; (*node) != NULL; node = &((*node)->next)) {
+		if((*node)->delay.deadline <= tick) {
+			(*node)->state = OS_READY;
+			//remove element from list
+			*node = (*node)->s_next;
+			return;
+		}
+	} 
+}
+
+
 
 

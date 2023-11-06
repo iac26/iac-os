@@ -12,7 +12,8 @@ extern port_context_t port_current_context;
 
 struct {
 	scheduler_t sch;
-
+	thread_t * s_head;
+	port_systick_t tick;
 } iacos;
 
 
@@ -63,5 +64,9 @@ __attribute__((naked)) void iacos_reschedule(void) {
 
 
 __attribute__((naked)) void iacos_systick(void) {
-	//perform systick stuff
+	// increment systick counter
+	iacos.tick += 1;
+
+	//compute delays
+	thread_eval_all(&(iacos.s_head), iacos.tick);
 }
