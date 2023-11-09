@@ -19,6 +19,7 @@
 	/* So whenever we want to request a reschedule, we trigger pendSV  */
 PendSV_Handler:
 	/* Save the context*/
+	cpsid	i
 	mrs	r0, psp		
 	subs	r0, r0, #32
 	ldr	r1, =port_current_context
@@ -41,13 +42,15 @@ PendSV_Handler:
 	subs	r0, r0, #32	
 	ldmia	r0!, {r4-r7}	
 	adds	r0, r0, #32	
-	msr	psp, r0       
+	msr	psp, r0     
+	cpsie	i  
 	bx	lr
 
 .thumb_func
 
 SysTick_Handler:
 	/* Save the context*/
+	cpsid	i
 	mrs	r0, psp		
 	subs	r0, r0, #32
 	ldr	r1, =port_current_context
@@ -71,6 +74,7 @@ SysTick_Handler:
 	subs	r0, r0, #32	
 	ldmia	r0!, {r4-r7}	
 	adds	r0, r0, #32	
-	msr	psp, r0        
+	msr	psp, r0      
+	cpsie	i  
 	bx	lr
 

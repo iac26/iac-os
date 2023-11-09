@@ -34,6 +34,8 @@ struct thread {
 	thread_t * next; //global thread list next
 	thread_t * prev; //global thread list prev
 	thread_t * s_next; //suspended thread list next
+	thread_t * w_next; //waiting thread list next
+	thread_t * r_next; //ready thread list next
 	thread_prio_t priority;
 	port_context_t context;
 	thread_state_t state;

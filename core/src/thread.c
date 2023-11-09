@@ -40,9 +40,25 @@ void thread_start(thread_t * thd) {
 }
 
 
-void thread_eval_all(thread_t ** head, port_systick_t tick) {
+void thread_set_delay(thread_t * thd, thread_t ** s_head, port_systick_t deadline) {
+	port_enter_critical();
+	thread_t * next = *s_head;
+	*s_head = thd;
+	thd->s_next = next;
+	thd->delay.deadline = deadline;
+	thd->state = OS_SUSPENDED;
+	port_exit_critical();
+	port_switch();
+}
+
+// void thread_yield(thread_t thd) {
+// 	For this we need round robin scheduling
+// }
+
+
+void thread_eval_all(thread_t ** s_head, port_systick_t tick) {
 	thread_t ** node;
-	for( node = head; (*node) != NULL; node = &((*node)->next)) {
+	for( node = s_head; (*node) != NULL; node = &((*node)->next)) {
 		if((*node)->delay.deadline <= tick) {
 			(*node)->state = OS_READY;
 			//remove element from list

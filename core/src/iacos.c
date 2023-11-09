@@ -53,6 +53,7 @@ void iacos_panic(const char * msg) {
 */
 
 //called from PendSV context
+//should arrive here with interrupts disabled
 __attribute__((naked)) void iacos_reschedule(void) {
 
 	iacos.sch.cur->context = port_current_context;
@@ -63,10 +64,19 @@ __attribute__((naked)) void iacos_reschedule(void) {
 }
 
 
+//should arrive here with interrupts disabled
 __attribute__((naked)) void iacos_systick(void) {
+
+	iacos.sch.cur->context = port_current_context;
+
 	// increment systick counter
 	iacos.tick += 1;
 
 	//compute delays
 	thread_eval_all(&(iacos.s_head), iacos.tick);
+
+	scheduler_reschedule(&iacos.sch);
+
+	port_current_context = iacos.sch.cur->context;
+
 }
