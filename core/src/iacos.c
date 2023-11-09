@@ -80,3 +80,8 @@ __attribute__((naked)) void iacos_systick(void) {
 	port_current_context = iacos.sch.cur->context;
 
 }
+
+
+thread_t * iacos_get_current_thd(void) {
+	return iacos.sch.cur;
+}

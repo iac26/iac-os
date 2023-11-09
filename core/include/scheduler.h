@@ -20,7 +20,4 @@ typedef struct scheduler {
 void scheduler_add_thread(	scheduler_t * sch,
 				thread_t * thd);
 
-void scheduler_add_threadI(	scheduler_t * sch,
-				thread_t * thd);
-
 void scheduler_reschedule(scheduler_t * sch);

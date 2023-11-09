@@ -14,19 +14,14 @@
  **/ 
 void scheduler_add_thread(	scheduler_t * sch,
 				thread_t * thd) {
-	port_enter_critical();
-	scheduler_add_threadI(sch, thd);
-	port_exit_critical();
-}
-
-void scheduler_add_threadI(	scheduler_t * sch,
-				thread_t * thd) {
 	thread_t ** node;
 	//insert thread in list such that they are sorted by priority
+	port_enter_critical();
 	for( node = &(sch->head); (*node) != NULL; node = &((*node)->next)) {
 		if((*node)->priority < thd->priority) {
 			thd->next = (*node);
 			(*node) = thd;
+			port_exit_critical();
 			return;
 		}
 	} 

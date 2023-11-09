@@ -53,12 +53,5 @@ void thread_create(	thread_t * thd,
 			uint32_t stack_size);
 
 
-void thread_createI(	thread_t * thd,
-			thread_prio_t prio, 
-			void (*entry)(void), 
-			uint32_t * stack, 
-			uint32_t stack_size);
-
-
 
 void thread_eval_all(thread_t ** head, port_systick_t tick);

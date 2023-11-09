@@ -7,4 +7,9 @@
 #endif
 
 
+#include <thread.h>
+
+
 void iacos_reschedule(void);
+
+thread_t * iacos_get_current_thd(void);
